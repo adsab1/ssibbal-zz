@@ -1,0 +1,526 @@
+$(function(){
+	status = 'wait';
+	$('.aladin_big').flickerClass('flicker');
+
+
+	setResult();
+	checkGame();
+	checkStatus();
+	sound = localStorage.getItem('sound_aladin');
+	if( sound != 'off' ) {
+		$('.btn_sound img').attr('src', '/images/sound_on.png');
+	} else {
+		$('.btn_sound img').attr('src', '/images/sound_off.png');
+	}
+//	$('.cloth_bodyarea img').changePicture(0);
+	
+});
+
+function playSound(id) {
+	$('#'+id)[0].play();
+}
+
+function cloth_down(j) {
+	$elem = $('.cloth_title');
+	$body = $('.cloth_body');
+	$img = $('.cloth_bodyarea img');
+	$('.cloth_bodyarea').animate({'margin-top': '190px'}, 1000);
+	$elem.animate({'top': parseInt($elem.css('top').replace('px','')) + 170}, 1000);
+	$body.animate({'height': parseInt($elem.css('height').replace('px','')) - 100, 'top': parseInt($elem.css('top').replace('px','')) + 100},1000);
+	$img.animate({'margin-top': '-170px'},
+		{
+			duration: 1000,
+			complete: function(){
+				if( j.lr && j.tf && j.oe ) {
+					if( status == 'scroll' ) {
+						status = 'result';	
+						$('#result_round_txt').text(j.round);
+						$('#result_oe img').attr('src', '/images/result_'+j.oe+'.png');
+						setTimeout(function(){$('#aladin3').aladinMove(j.lr,j.tf,200);}, 3000);
+					}			
+				}
+
+
+			}
+	});
+}
+
+function soundOnoff(elem) {
+	sound = localStorage.getItem('sound_aladin');
+	if( sound != 'off' ) {
+		localStorage.setItem('sound_aladin', 'off');
+		$(elem).find('img').attr('src', '/images/sound_off.png');
+		$('audio').each(function(){
+			this.pause(); // Stop playing
+			this.currentTime = 0; // Reset time
+		}); 
+	} else {
+		localStorage.setItem('sound_aladin', 'on');
+		$(elem).find('img').attr('src', '/images/sound_on.png');
+
+	}
+}
+
+function bet(elem, amt) {
+	if( $(elem).hasClass('active') ) {
+		$(elem).removeClass('active');
+		$(elem).find('i').removeClass('active');
+		$('#bt').val(0);
+	} else {
+		$('.aladin_btn_chk').removeClass('active');
+		$('.btn_betting').removeClass('active');
+		$(elem).addClass('active');
+		$('.btn_betting.btn_'+amt+' i').addClass('active');
+		$('#bt').val(amt);
+	}
+	
+}
+
+$.fn.changePicture = function(turn) {
+	len = this.length;
+	if( turn >= len ) {
+		turn = 0;
+	}
+	this.each(function(k,v){
+		var $elem = $(v);
+		$elem.hide();
+		if( k == turn ) {
+			$elem.show();
+		}
+	});
+	setTimeout(function() {
+		$('.cloth_bodyarea img').changePicture(turn + 1);
+	}, 50);
+}
+
+
+$.fn.flickerClass = function(cls) {
+	return this.each(function() {
+		var $elem = $(this);
+		setTimeout(function(){
+			$elem.toggleClass(cls);
+			setTimeout(function(){
+				$elem.toggleClass(cls);
+				$elem.flickerClass(cls);
+			}, 80);
+		}, 3000);
+	});
+}
+
+function checkStatus() {
+	$.ajax({
+		url : VAR.statusurl
+	,	dataType : 'json'
+	, type : 'get'
+	, success : function(j) {
+		
+			$('#current_round').text(j.round);
+			$('#rate_this_round').text(j.round);
+			$('#current_gid').val(j.gid);
+			$('#rate_odd_txt').text(j.odd);
+			$('#rate_even_txt').text(j.even);
+			$('#rate_odd').css({'width':j.odd+'%'});
+			$('#rate_even').css({'width':j.even+'%'});
+			
+
+			$('#oddrate').text(j.odd + ' %');
+			$('#evenrate').text(j.even + ' %');
+			sound = localStorage.getItem('sound_aladin');
+			if( sound != 'off' ) {
+				$('#btn_aladin_sound').click();
+			} else {
+				$('audio').each(function(){
+					this.pause(); // Stop playing
+					this.currentTime = 0; // Reset time
+				}); 
+			}
+
+
+			if( j.lr && j.tf && j.oe && status == 'wait' ) {
+				status = 'scroll';
+				setTimeout(function(){
+					$('#aladin1').hide();
+					$('#aladin2').show();
+					setTimeout(function(){						
+						$('#aladin1').show();
+						$('#aladin2').hide();
+						setTimeout(function(){
+							$('#aladin1').hide();
+							$('#aladin2').show();
+							setTimeout(function(){								
+								$('#aladin1').show();
+								$('#aladin2').hide();
+								setTimeout(function(){
+									$('#aladin1').hide();
+									$('#aladin2').show();
+									setTimeout(function(){										
+										$('#aladin1').show();
+										$('#aladin2').hide();
+										setTimeout(function(){
+											$('#aladin1').hide();
+											$('#aladin2').show();
+											setTimeout(function(){												
+												$('#aladin1').show();
+												$('#aladin2').hide();
+												setTimeout(function(){
+													$('#aladin1').hide();
+													$('#aladin2').show();
+													setTimeout(function(){						
+														$('#aladin1').show();
+														$('#aladin2').hide();
+														setTimeout(function(){
+															$('#aladin1').hide();
+															$('#aladin2').show();
+															setTimeout(function(){								
+																$('#aladin1').show();
+																$('#aladin2').hide();
+																setTimeout(function(){
+																	$('#aladin1').hide();
+																	$('#aladin2').show();
+																	setTimeout(function(){										
+																		$('#aladin1').show();
+																		$('#aladin2').hide();
+																		setTimeout(function(){
+																			$('#aladin1').hide();
+																			$('#aladin2').show();
+																			setTimeout(function(){												
+																				$('#aladin1').show();
+																				$('#aladin2').hide();
+																				if( j.lr == 'l' ) {
+																					$('#aladin1').show();
+																					$('#aladin2').hide();
+																				} else if( j.lr == 'r' ) {
+																					$('#aladin1').hide();
+																					$('#aladin2').show();
+																				}
+																				setTimeout(function(){cloth_down(j);}, 300);
+																			}, 60)
+																		}, 60)
+																	}, 60)
+																}, 60)
+															}, 100)
+														}, 100)
+													}, 100)
+												}, 100);
+											}, 100)
+										}, 100)
+									}, 300)
+								}, 300)
+							}, 300)
+						}, 300)
+					}, 300)
+				}, 300);
+
+
+				
+			}
+
+			
+			setTimeout(checkStatus, 1000);
+		}
+	});
+}
+
+function checkGame() {
+	
+	$.ajax({
+		url : VAR.infourl
+	,	dataType : 'json'
+	, type : 'get'
+	, success : function(j) {
+			//$('#c_timer').val(j.nowTime);
+			if( j.remain < 1 ) {
+				$('#remain_time').text('00:00');
+			} else {
+				if ( j.remain_sec.length == 1 ) j.remain_sec = "0" + j.remain_sec;
+				$('#remain_time').text(j.remain_min + ':' + j.remain_sec);
+			}
+
+			if( j.remain > 10 && status == 'wait' ) {
+				$('.aladin_big').each(function(){
+					if( $(this).css('display') == 'none' ) {
+						$(this).css('display', 'block');
+					} else {
+						$(this).css('display', 'none');
+					}
+				});
+			} else {
+				$('.aladin_big').each(function(){
+					if( $(this).hasClass('aladin_blue_r') ) {
+						$(this).removeClass('aladin_blue_r').addClass('aladin_red_r');
+					}
+					if( $(this).hasClass('aladin_blue_l') ) {
+						$(this).removeClass('aladin_blue_l').addClass('aladin_red_l');
+					}
+
+					
+				});
+			}
+			
+			if( $('#current_time').text() != j.nowTime ) {
+				$('#current_time').text(j.nowTime);
+			}
+
+			setTimeout(checkGame, 900);
+		}
+	});
+}
+
+function setResult() {
+	$.ajax({
+			url : VAR.resulturl
+		,	dataType : 'json'
+		, type : 'get'
+		, success : function(j) {
+			console.log( j );
+			resultlist = '';
+			$.each(j.results, function(k,v) {
+				if( k == 0 ) {
+					$('#last_round').text(v.round);
+					$('#last_result i').removeClass('icon_result_odd').removeClass('icon_result_even').addClass('icon_result_'+v.oe);
+				}
+
+				resultlist += '<li>'+
+							'<span class="result_li_round">'+
+							'<span>'+v.round+'</span>'+
+							'<span>회차&nbsp;</span>'+
+							'</span>'+
+							'<span class="result_li_rate gameimg">	'+							
+								'<span class="result_li_odd_rate" style="width:'+v.rate_o+'%;"></span>'+
+								'<span class="result_li_even_rate" style="width:'+v.rate_e+'%;"></span>'+
+							'</span>'+
+							'<span class="result_li_rate_txt gameimg">			'+					
+								'<span class="result_li_odd_txt">'+v.rate_o+'%</span>'+
+								'<span class="result_li_even_txt">'+v.rate_e+'%</span>'+
+							'</span>'+
+							'<span class="result_li_'+v.oe+'">'+(v.oe == 'odd' ? '홀' : '짝')+'</span>'+
+							'<span class="result_li_'+v.lr+'">'+v.tf+'</span>'+
+						'</li>';
+			});
+
+
+			$('#result_area ul').html(resultlist);
+
+
+			setTimeout( setResult, 3000 );
+
+		}
+	});
+}
+
+
+function showResultPanel() {	
+	$('#result_panel').show();
+	setTimeout(function(){location.reload();}, 5000);
+}
+
+
+$.fn.aladinMove = function(lr, tf, duration) {
+	ladderwidth = 180;
+	this.show();
+	$('#ladder').removeClass('ladder_3').removeClass('ladder_4').addClass('ladder_'+tf);
+	$('#ladder_cloth').hide();
+	return this.each(function() {
+		var $elem = $(this);
+		j = {lr : lr, tf : tf};
+		if( !j.lr && !j.tf ) {
+			return;
+		}
+
+		if( j.lr == 'l' ) {
+			//init
+			
+			$elem.removeClass('aladin_l').addClass('aladin_r');
+
+			//move down
+			$('#path1').animate({height: 43}, {duration: duration,complete: function(){}});
+			$elem.animate({top: parseInt($elem.css('top').replace('px','')) + 50}, {
+				duration: duration,
+				complete: function(){
+					//move right ladder1
+					$('#path11').animate({width: 200}, {duration: duration,complete: function(){}});
+					$elem.animate({left: parseInt($elem.css('left').replace('px','')) + ladderwidth}, {
+						duration: duration,
+						complete: function(){
+							//turn left 
+							$elem.removeClass('aladin_r').addClass('aladin_l');
+							//move down
+							$('#path4').animate({height: 50}, {duration: duration,complete: function(){}});
+							$elem.animate({top: parseInt($elem.css('top').replace('px','')) + 50}, {
+								duration: duration,
+								complete: function(){
+									//move left ladder2
+									$('#path12').css({'margin-left':201, 'width':0}).animate({'margin-left': 0, 'width': 201}, {duration: duration,complete: function(){}});
+									$elem.animate({left: parseInt($elem.css('left').replace('px','')) - ladderwidth}, {
+										duration: duration,
+										complete: function(){
+											//turn right
+											$elem.removeClass('aladin_l').addClass('aladin_r');
+											//move down
+											$('#path5').animate({height: 50}, {duration: duration,complete: function(){}});
+											$elem.animate({top: parseInt($elem.css('top').replace('px','')) + 50}, {
+												duration: duration,
+												complete: function(){
+													//move right ladder3
+													$('#path13').animate({width: 200}, {duration: duration,complete: function(){}});
+													$elem.animate({left: parseInt($elem.css('left').replace('px','')) + ladderwidth}, {
+														duration: duration,
+														complete: function(){
+															//turn left
+															$elem.removeClass('aladin_r').addClass('aladin_l');
+															
+
+															if( j.tf == '3' ) {
+																//move down
+																$('#path8').animate({height: 100}, {duration: duration,complete: function(){}});
+																$elem.animate({top: parseInt($elem.css('top').replace('px','')) + 100}, {
+																	duration: duration,
+																		complete: function(){		
+																		setTimeout(function(){showResultPanel()}, duration);											
+																	}
+																});
+																//!move down
+															} else if ( j.tf == '4') {
+																//move down
+																$('#path8').animate({height: 50}, {duration: duration,complete: function(){}});
+																$elem.animate({top: parseInt($elem.css('top').replace('px','')) + 50}, {
+																	duration: duration,
+																		complete: function(){
+																		//move left
+																		$('#path14').css({'margin-left':201, 'width':0}).animate({'margin-left': 0, 'width': 201}, {duration: duration,complete: function(){}});
+																		$elem.animate({left: parseInt($elem.css('left').replace('px','')) - ladderwidth}, {
+																			duration: duration,
+																				complete: function(){
+																				//turn right
+																				$elem.removeClass('aladin_l').addClass('aladin_r');
+																				//move down
+																				$('#path9').animate({height: 50}, {duration: duration,complete: function(){}});
+																				$elem.animate({top: parseInt($elem.css('top').replace('px','')) + 50}, {
+																					duration: duration,
+																						complete: function(){
+																						setTimeout(function(){showResultPanel()}, duration);
+																					}
+																				});//!move down
+																			}
+																		});//!move left
+																	}
+																});
+																//!move down
+															}
+														}
+													});
+													//!move right
+												}
+											});//!move down
+										}
+									});//!move left
+								}
+							});//!move down
+
+
+
+							
+						}
+					});//!move right
+				}
+			});
+		} else if( j.lr == 'r' ) {
+			//init
+			
+			$elem.css({'margin-left': 345}).removeClass('aladin_r').addClass('aladin_l');
+
+			//move down
+			$('#path2').animate({height: 43}, {duration: duration,complete: function(){}});
+			$elem.animate({top: parseInt($elem.css('top').replace('px','')) + 50}, {
+				duration: duration,
+				complete: function(){
+					//move left ladder1
+					$('#path11').css({'margin-left':201, 'width':0}).animate({'margin-left': 0, 'width': 201}, {duration: duration,complete: function(){}});
+					$elem.animate({left: parseInt($elem.css('left').replace('px','')) - ladderwidth}, {
+						duration: duration,
+						complete: function(){
+							//turn right 
+							$elem.removeClass('aladin_l').addClass('aladin_r');
+							//move down
+							$('#path3').animate({height: 50}, {duration: duration,complete: function(){}});
+							$elem.animate({top: parseInt($elem.css('top').replace('px','')) + 50}, {
+								duration: duration,
+								complete: function(){
+									//move right ladder2
+									$('#path12').animate({width: 200}, {duration: duration,complete: function(){}});
+									$elem.animate({left: parseInt($elem.css('left').replace('px','')) + ladderwidth}, {
+										duration: duration,
+										complete: function(){
+											//turn right
+											$elem.removeClass('aladin_r').addClass('aladin_l');
+											//move down
+											$('#path6').animate({height: 50}, {duration: duration,complete: function(){}});
+											$elem.animate({top: parseInt($elem.css('top').replace('px','')) + 50}, {
+												duration: duration,
+												complete: function(){
+													//move right ladder3
+													$('#path13').css({'margin-left':201, 'width':0}).animate({'margin-left': 0, 'width': 201}, {duration: duration,complete: function(){}});
+													$elem.animate({left: parseInt($elem.css('left').replace('px','')) - ladderwidth}, {
+														duration: duration,
+														complete: function(){
+															//turn left
+															$elem.removeClass('aladin_l').addClass('aladin_r');
+															
+
+															if( j.tf == '3' ) {
+																//move down
+																$('#path7').animate({height: 100}, {duration: duration,complete: function(){}});
+																$elem.animate({top: parseInt($elem.css('top').replace('px','')) + 100}, {
+																	duration: duration,
+																		complete: function(){		
+																		setTimeout(function(){showResultPanel()}, duration);						
+																	}
+																});
+																//!move down
+															} else if ( j.tf == '4') {
+																//move down
+																$('#path7').animate({height: 50}, {duration: duration,complete: function(){}});
+																$elem.animate({top: parseInt($elem.css('top').replace('px','')) + 50}, {
+																	duration: duration,
+																		complete: function(){
+																		//move left
+																		$('#path14').animate({width: 200}, {duration: duration,complete: function(){}});
+																		$elem.animate({left: parseInt($elem.css('left').replace('px','')) + ladderwidth}, {
+																			duration: duration,
+																				complete: function(){
+																				//turn right
+																				$elem.removeClass('aladin_r').addClass('aladin_l');
+																				//move down
+																				$('#path10').animate({height: 50}, {duration: duration,complete: function(){}});
+																				$elem.animate({top: parseInt($elem.css('top').replace('px','')) + 50}, {
+																					duration: duration,
+																						complete: function(){
+																						setTimeout(function(){showResultPanel()}, duration);
+																					}
+																				});//!move down
+																			}
+																		});//!move left
+																	}
+																});
+																//!move down
+															}
+														}
+													});
+													//!move right
+												}
+											});//!move down
+										}
+									});//!move left
+								}
+							});//!move down
+						}
+					});//!move right
+				}
+			});
+		}
+
+	});
+	
+
+
+}	
