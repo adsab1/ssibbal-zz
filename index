@@ -1,0 +1,130 @@
+
+<!DOCTYPE html>
+<html lang="ko"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+	
+	<meta name="viewport" content="width=1400, initial-scale=1.0">
+	<meta http-equiv="imagetoolbar" content="no">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<title>알라딘1분</title>
+  <link href="/css/bootstrap.custom.css" rel="stylesheet">
+	<link href="/css/betguide.css" rel="stylesheet">
+  <link href="/css/modern-business.css" rel="stylesheet">
+	<link rel="stylesheet" href="/css/aladin.css?ver=1681998661130">
+	<link rel="stylesheet" type="text/css" href="/css/nanumsquare.css">
+</head>
+<body>
+
+<div class="row">
+	<div class="col-12">
+		<div id="aladin_container">
+			<div id="aladin_game">
+				<div><audio src="/mp3/aladin.mp3" id="aladin_sound"><button id="btn_aladin_sound" onclick="playSound(&#39;aladin_sound&#39;);" style="display:none;"></button></audio></div>
+				<input type="hidden" id="current_gid" value="727297">
+				<img id="aladin_board" class="gameimg" src="/images/board_night.png?ver=1">
+				<span id="current_round" class="gameimg"></span>
+				<div class="thistime gameimg"><span>현재시간 : </span> <span id="current_time"></span></div>
+				<div class="remain gameimg"><span id="remain_time"></span></div>
+				<div id="last_result" class="gameimg"><span id="last_round"></span><span>회차 결과</span><i class="icon_result icon_result_odd"></i></div>
+				<!--<a class="gameimg btn_min btn_aladin_1min" href="http://aladin3min.gp-486.com/"><img src="/images/game1.png"></a>
+				<button type="button" class="gameimg btn_min btn_aladin_3min hide"><img src="/images/game3.png"></button>-->
+				<button type="button" class="gameimg btn_sound" onclick="soundOnoff(this);"><img src="/images/sound_off.png"></button>
+				<button type="button" class="gameimg btn_sound hide"><img src="/images/sound_off.png"></button>
+
+				<div id="ladder" class="gameimg ladder_4"></div>
+				<div id="ladder_cloth" class="gameimg">
+					<div class="cloth_bodyarea gameimg">
+						<!--<img src="/images/1.png" class="gameimg" style="display: none;">
+						<img src="/images/2.png" class="gameimg" style="display: none;">
+						<img src="/images/3.png" class="gameimg" style="display: none;">
+						<img src="/images/4.png" class="gameimg" style="display: none;">
+						<img src="/images/5.png" class="gameimg" style="display: none;">
+						<img src="/images/6.png" class="gameimg" style="display: none;">
+						<img src="/images/7.png" class="gameimg" style="display: none;">
+						<img src="/images/8.png" class="gameimg" style="display: none;">
+						<img src="/images/9.png" class="gameimg" style="display: none;">
+						<img src="/images/10.png" class="gameimg" style="display: none;">
+						<img src="/images/11.png" class="gameimg" style="display: none;">
+						<img src="/images/12.png" class="gameimg" style="display: none;">
+						<img src="/images/13.png" class="gameimg" style="display: none;">
+						<img src="/images/14.png" class="gameimg" style="display: none;">
+						<img src="/images/15.png" class="gameimg" style="display: none;">
+						<img src="/images/16.png" class="gameimg" style="display: none;">
+						<img src="/images/17.png" class="gameimg" style="display: none;">
+						<img src="/images/18.png" class="gameimg" style="display: none;">
+						<img src="/images/19.png" class="gameimg" style="">
+						<img src="/images/20.png" class="gameimg" style="display: none;">
+						<img src="/images/21.png" class="gameimg" style="display: none;">
+						<img src="/images/22.png" class="gameimg" style="display: none;">
+						<img src="/images/23.png" class="gameimg" style="display: none;">
+						<img src="/images/24.png" class="gameimg" style="display: none;">
+						<img src="/images/25.png" class="gameimg" style="display: none;">
+						<img src="/images/26.png" class="gameimg" style="display: none;">
+						<img src="/images/27.png" class="gameimg" style="display: none;">
+						<img src="/images/28.png" class="gameimg" style="display: none;">
+						<img src="/images/29.png" class="gameimg" style="display: none;">
+						<img src="/images/30.png" class="gameimg" style="display: none;">
+						<img src="/images/31.png" class="gameimg" style="display: none;">
+						<img src="/images/32.png" class="gameimg" style="display: none;">
+						<img src="/images/33.png" class="gameimg" style="display: none;">
+						<img src="/images/34.png" class="gameimg" style="display: none;">-->
+						<img src="/images/cloth_bodyarea.png" class="gameimg">
+					</div>
+					<div class="cloth_title gameimg"></div>
+				</div>
+				<div id="aladin_rate_area" class="gameimg">
+					<div id="rate_title"><span id="rate_this_round"></span>회차 구매 분포도</div>
+					<div id="rate_body">
+						<div id="rate_odd" style="width: 50%;"></div>
+						<div id="rate_even" style="width: 50%;"></div>
+					</div>
+					<div id="rate_txt" class="gameimg">
+						<div id="oddtext" class="">홀(<span id="rate_odd_txt">50</span>%)</div>
+						<div id="eventext" class="">짝(<span id="rate_even_txt">50</span>%)</div>
+					</div>
+				</div>
+				<div id="ladder_path" class="gameimg">
+					<div id="path1" class="gameimg ladderpath_height"></div>
+					<div id="path2" class="gameimg ladderpath_height"></div>
+					<div id="path3" class="gameimg ladderpath_height"></div>
+					<div id="path4" class="gameimg ladderpath_height"></div>
+					<div id="path5" class="gameimg ladderpath_height"></div>
+					<div id="path6" class="gameimg ladderpath_height"></div>
+					<div id="path7" class="gameimg ladderpath_height"></div>
+					<div id="path8" class="gameimg ladderpath_height"></div>
+					<div id="path9" class="gameimg ladderpath_height"></div>
+					<div id="path10" class="gameimg ladderpath_height"></div>
+					<div id="path11" class="gameimg ladderpath_width"></div>
+					<div id="path12" class="gameimg ladderpath_width"></div>
+					<div id="path13" class="gameimg ladderpath_width"></div>
+					<div id="path14" class="gameimg ladderpath_width"></div>
+				</div>
+				<div id="aladin1" class="gameimg aladin_big aladin_red_r" style="display: block;"></div>
+				<div id="aladin2" class="gameimg aladin_big aladin_red_l" style="display: none;"></div>
+				<div id="aladin3" class="gameimg aladin_small aladin_l"></div>
+
+				<div id="result_area" class="gameimg">
+					<ul style="padding:0;"></ul>
+				</div>
+
+				<div id="result_panel" class="gameimg">
+					<div id="result_board">
+						<div id="result_round" class="gameimg"><span id="result_round_txt"></span><span>회차 결과</span></div>
+						<div id="result_oe" class="gameimg"><img src="/images/result_odd.png"></div>
+					</div>
+				</div>
+			</div>
+			
+		</div>
+	</div>
+</div>
+
+<script>
+	VAR = {};
+	VAR.statusurl = 'status.asp';
+	VAR.infourl = 'info.asp';
+	VAR.resulturl = 'result.asp';
+</script>
+<script src="/js/jquery-3.3.1.js"></script>
+<script type="text/javascript" src="/js/aladin.js?ver=1681998661130"></script>
+
+</body></html>
